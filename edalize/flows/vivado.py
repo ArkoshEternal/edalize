@@ -63,7 +63,11 @@ class Vivado(Edaflow):
             flow["vivado"] = {"deps": deps}
 
         name = self.edam["name"]
-        self.commands.set_default_target(name + ".bit")
+
+        if flow_options.get("pnr") == "none":
+            self.commands.set_default_target("synth")
+        else:
+            self.commands.set_default_target(name + ".bit")
         return FlowGraph.fromdict(flow)
 
     def run(self):

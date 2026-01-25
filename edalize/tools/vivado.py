@@ -222,6 +222,8 @@ class Vivado(Edatool):
                 tcl_scripts,
                 [project_file],
             )
+        elif synth == "none":
+            targets = [project_file]
         else:
             targets = edif_files
 

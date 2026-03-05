@@ -73,7 +73,7 @@ class Vcs(Edatool):
                 continue
             file_type = f.get("file_type", "")
             if file_type.startswith("verilogSource") or file_type.startswith(
-                "systemVerilogSource"
+                "systemVerilogSource" or file_type.startswith("cSource")
             ):
                 if self._add_include_dir(f, incdirs, force_slash=True):
                     include_files.append(f["name"])
@@ -222,7 +222,7 @@ class Vcs(Edatool):
         for fg in filegroups:
             # Ignore empty file groups
             if fg[1]:
-                (cmd, file_type, lib, defines) = fg[0]
+                cmd, file_type, lib, defines = fg[0]
                 depfiles += fg[1]
                 options = self.tool_options.get("analysis_options", []).copy()
                 if cmd == "vlogan":

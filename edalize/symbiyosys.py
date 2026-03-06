@@ -238,6 +238,10 @@ You can reproduce the example above with something like
         base_cmd = "read {} {} ".format(value, self._get_read_flags())
 
         lines = []
+
+        for path in self.incdirs: 
+            lines.append(f"read -incdir {self.work_root}/{path}")
+            
         for path in self.rtl_paths:
             lines.append(base_cmd + os.path.basename(path))
 

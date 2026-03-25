@@ -258,7 +258,11 @@ class Vivado(Edatool):
         command += [bitstream]
         commands.add(command, ["pgm"], depends)
 
-        commands.set_default_target(bitstream)
+        if "pnr" in self.tool_options and self.tool_options["pnr"] == "none":
+            commands.set_default_target("synth")
+        else:
+            commands.set_default_target(bitstream)
+
         self.commands = commands
 
     def write_config_files(self):
@@ -285,9 +289,15 @@ class Vivado(Edatool):
         if "pnr" in self.tool_options:
             if self.tool_options["pnr"] == "vivado":
                 pass
-            elif self.tool_options["pnr"] == "none":
+            elif (
+                self.tool_options["pnr"] == "none"
+                and self.tool_options["synth"] != "none"
+            ):
                 args.append("synth")
-        return ("make", self.args, self.work_root)
+            else:
+                args.append("post_build")
+
+        return ("make", args, self.work_root)
 
     def run(self):
         """
